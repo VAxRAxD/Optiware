@@ -59,6 +59,3 @@ def dashboard(request):
         }
     }
     return JsonResponse(data)
-
-def placeOrder(request):
-    pass
