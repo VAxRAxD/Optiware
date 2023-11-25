@@ -28,6 +28,14 @@ def store(request):
     data['suppliers']=supplier
     return JsonResponse(data)
 
+def inventory(request):
+    inventory_db=Inventory.objects.all()
+    inventory=dict()
+    for p in inventory_db:
+        inventory[p.name]=p.quantity
+    return JsonResponse(inventory)
+        
+
 def dashboard(request):
     data={
         'customers':100,
