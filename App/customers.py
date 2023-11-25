@@ -13,23 +13,25 @@ def listCustomers(request):
                          'email':c.email}
     return JsonResponse(customers)
 
+@csrf_exempt
 def updateCustomers(request):
-    customer_db=Customer.objects.all()
-    customers=dict()
-    # cust=Customer.objects.get(pk=id)
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
         name=data.get('name')
-        address=data.get('address')
-        contact=data.get('contact')
-        email=data.get('email')
-        Customer.objects.update(
-            name=name,
-            address=address,
-            contact=contact,
-            email=email, 
-        )
-    return HttpResponse(customers)
+        type=data.get('type')
+        c=Customer.objects.get(name=name)
+        for t in type:
+            if t=="email":
+                email=data.get('emal')
+                c.email=email
+            elif t=="address":
+                address=data.get('address')
+                c.address=address
+            else:
+                contact=data.get('contact')
+                c.contact=contact
+        c.save()            
+    return HttpResponse()
 
 @csrf_exempt
 def customers(request):
