@@ -1,5 +1,7 @@
 from django.http import JsonResponse
 from . models import *
+import os
+from csv import DictReader
 
 def store(request):
     product_db=Product.objects.all()

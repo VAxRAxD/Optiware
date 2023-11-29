@@ -8,7 +8,7 @@ urlpatterns = [
     path('manufacture/',manufacture.listManufacturing,name='list_manufacture'),
     path('add_manufacture/',manufacture.startManufacturing,name='add_manufacture'),
     path('update_manufacture/',manufacture.updateStatus, name='update_manufacture'),
-    path('add/customers/',customers.customers, name="customers"),
-    path('update/customers/',customers.updateCustomers),
-    path('list_customers/', customers.listCustomers)
+    path('add_customers/',customers.customers, name="add_customer"),
+    path('update_customers/',customers.updateCustomers, name='update_customer'),
+    path('list_customers/', customers.listCustomers,name='list_customer'),
 ]
