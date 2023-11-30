@@ -43,7 +43,6 @@ class Inventory(models.Model):
     
     def __str__(self):
         return self.name
-
     
 class Customer(models.Model):
     name=models.CharField(max_length=100,null=True)
@@ -77,6 +76,22 @@ class Order(models.Model):
     
     def __str__(self):
         return f'{self.ordered_date} : {self.customer} ordered {self.quantity} {self.product}'
+    
+class Purchase(models.Model):
+    PURCHASE=(
+        ('Ordered','Ordered'),
+        ('Acquired','Acquired')
+    )
+    supplier=models.ForeignKey(Supplier, null=True, on_delete=models.SET_NULL)
+    product=models.CharField(max_length=100, null=True)
+    quantity=models.IntegerField(null=True)
+    ordered_date=models.DateField(null=True,blank=True,)
+    received_date=models.DateField(null=True,blank=True)
+    amount=models.IntegerField(null=True)
+    purchase_status=models.CharField(max_length=200, null=True, choices=PURCHASE,default="Ordered")
+    
+    def __str__(self):
+        return f'{self.ordered_date} : Ordered {self.quantity} {self.product} from {self.supplier}'
     
 class Manufacturing(models.Model):
     STATUS=(
