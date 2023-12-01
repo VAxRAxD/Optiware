@@ -34,7 +34,7 @@ def updateCustomers(request):
     return HttpResponse()
 
 @csrf_exempt
-def customers(request):
+def addCustomers(request):
     if request.method=="POST":
         data = json.loads(request.body.decode('utf-8'))
         name=data.get('name')

@@ -24,18 +24,21 @@ def store(request):
         supplier[s.name]={'address':s.address,
                           'contact':s.contact,
                           'email':s.email}
-    data=dict()
-    data['products']=product
-    data['raw_materials']=raw_material
-    data['suppliers']=supplier
-    return JsonResponse(data)
-
-def inventory(request):
     inventory_db=Inventory.objects.all()
     inventory=dict()
     for p in inventory_db:
         inventory[p.name]=p.quantity
-    return JsonResponse(inventory)
+    warehouse_db=Warehouse.objects.all()
+    warehouse=dict()
+    for w in warehouse_db:
+        warehouse[w.name]=w.quantity
+    data=dict()
+    data['products']=product
+    data['raw_materials']=raw_material
+    data['suppliers']=supplier
+    data['inventory']=inventory
+    data['warehouse']=warehouse
+    return JsonResponse(data)
 
 def dashboard(request):
     current_month=datetime.now().month-1
