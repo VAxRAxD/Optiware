@@ -59,6 +59,7 @@ class Order(models.Model):
         ('Unpaid','Unpaid')
     )
     ORDER=(
+        ('Awaiting Confirmation','Awaiting Confirmation'),
         ('Pending', 'Pending'),
         ('Processing','Processing'),
         ('Ready','Ready'),
@@ -72,7 +73,7 @@ class Order(models.Model):
     delivered_date=models.DateField(null=True,blank=True)
     amount=models.IntegerField(null=True)
     payment_status=models.CharField(max_length=200, null=True, choices=PAYMENT,default="Unpaid")
-    order_status=models.CharField(max_length=200, null=True, choices=ORDER,default="Pending")
+    order_status=models.CharField(max_length=200, null=True, choices=ORDER,default="Awaiting Confirmation")
     
     def __str__(self):
         return f'{self.ordered_date} : {self.customer} ordered {self.quantity} {self.product}'
@@ -85,7 +86,7 @@ class Purchase(models.Model):
     supplier=models.ForeignKey(Supplier, null=True, on_delete=models.SET_NULL)
     product=models.CharField(max_length=100, null=True)
     quantity=models.IntegerField(null=True)
-    ordered_date=models.DateField(null=True,blank=True,)
+    ordered_date=models.DateField(auto_now_add=True,null=True,blank=True)
     received_date=models.DateField(null=True,blank=True)
     amount=models.IntegerField(null=True)
     purchase_status=models.CharField(max_length=200, null=True, choices=PURCHASE,default="Ordered")
