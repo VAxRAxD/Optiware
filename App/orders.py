@@ -32,6 +32,11 @@ def placeOrder(request):
         ppp=math.floor(product.raw_material.length/product.length)
         if required<=0:
             print("Order is Ready")
+            # i=Inventory.objects.get(name=product.name)
+            # i.quantity-=quantity
+            # i.save()
+            eoq_=eoqCalc(product.name)
+            applyEOQ(product, eoq_)
             quantity-=stock.quantity
         elif required<=material.quantity*ppp:
             if required%ppp==0:
