@@ -1,6 +1,7 @@
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from . models import *
+from . manufacture import *
 from . eoq import *
 import json, math
 
@@ -30,24 +31,50 @@ def placeOrder(request):
         material=Warehouse.objects.get(name=product.raw_material.name)
         required=quantity-stock.quantity
         ppp=math.floor(product.raw_material.length/product.length)
+        demand=0
         if required<=0:
             print("Order is Ready")
-            # i=Inventory.objects.get(name=product.name)
-            # i.quantity-=quantity
-            # i.save()
-            eoq_=eoqCalc(product.name)
-            applyEOQ(product, eoq_)
-            quantity-=stock.quantity
+            stock.quantity-=quantity
+            stock.save()
         elif required<=material.quantity*ppp:
+            stock.quantity=0
+            stock.save()
+            Manufacturing.objects.create(
+                name=product,
+                quantity=required  
+            )
             if required%ppp==0:
                 print(f'{required//ppp} rods are being utililsed')
+                material.quantity-=required//ppp
+                material.save()
             else:
                 print(f'{(required//ppp)+1} rods are being utililsed')
+                material.quantity-=(required//ppp)+1
+                material.save()
             print("Order under process")
         else:
+            stock.quantity=0
+            stock.save()
             required-=material.quantity*ppp
             print(f'{required} units required')
-            order=math.ceil(required*(product.length/product.raw_material.length))+100
-            order=(order//10)*10
-            print(f"Ordering {order} units of raw materials")
+            Manufacturing.objects.create(
+                name=product,
+                quantity=material.quantity*ppp  
+            )
+            material.quantity=0
+            material.save()
+            order=math.ceil(required*(product.length/product.raw_material.length))
+            order=((order+9)//10)*10
+            demand+=order
+            print(f"{order} needs to be ordered to complete order")
+        eoq_=eoqCalc(product.name)
+        demand+=applyEOQ(product, eoq_)
+        if demand>=0:
+            print(f"Ordering {demand} units of raw materials")
+        Purchase.objects.create(
+            supplier=product.raw_material.supplier,
+            product=product.raw_material.name,
+            quantity=demand,
+            amount=demand*(product.raw_material.price)
+        )
     return HttpResponse()

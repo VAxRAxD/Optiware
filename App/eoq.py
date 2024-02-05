@@ -29,4 +29,9 @@ def applyEOQ(product,quantity):
    possible=material_avail*math.floor(material.length/item.length)
    quantity-=possible
    order=math.ceil(quantity*(item.length/material.length))
-   print(stock,material,material_avail,possible,quantity,order)
+   if int(str(order)[-2::])>50:
+      order=(order//10)*10
+   else:
+      order=(order//100)*100
+   print(f'EOQ suggests ordering of {order} amount of raw materials')
+   return order
