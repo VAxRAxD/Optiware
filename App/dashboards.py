@@ -71,8 +71,14 @@ def dashboard(request):
         secmw+=len(records.filter(product="Security Metre Wire"))
         iclockcover+=len(records.filter(product="IC Lock Cover"))
         last_3_months_orders+=len(records)
-        last_3_months_sales+=sales
-        last_3_months_purchases+=profit
+        try:
+            last_3_months_sales+=sales
+        except:
+            last_3_months_sales=0
+        try:
+            last_3_months_purchases+=profit
+        except:
+            last_3_months_purchases=0
         sales_graph[f'{calendar.month_name[last_3_months[i][0]][:3]}-{last_3_months[i][1]}']={'orders':len(records),'sales':sales,'profit':profit}
         product_graph[f'{calendar.month_name[last_3_months[i][0]][:3]}-{last_3_months[i][1]}']={'debring':len(records.filter(product="Debring")),
                                                                                                 'caplock':len(records.filter(product="Caplock")),
