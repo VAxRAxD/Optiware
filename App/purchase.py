@@ -24,5 +24,12 @@ def purchaseRawMaterial(request):
         product=data.get('product')
         quantity=data.get('quantity')
         amount=quantity*(RawMaterial.objects.get(name=product).price)
+        Purchase.objects.create(
+            supplier=supplier,
+            product=product,
+            quantity=quantity,
+            amount=amount
+            
+        )
         print(f'Ordered {quantity} {product} from {supplier}')
         return HttpResponse()
