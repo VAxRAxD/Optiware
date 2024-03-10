@@ -102,8 +102,8 @@ class Manufacturing(models.Model):
     )
     name=models.CharField(max_length=100,null=True)
     quantity=models.IntegerField(null=True)
-    start_date=models.DateTimeField(auto_now_add=True,null=True)
-    end_date=models.DateTimeField(null=True,blank=True)
+    start_date=models.DateField(auto_now_add=True,null=True,blank=True)
+    end_date=models.DateField(null=True,blank=True)
     status=models.CharField(max_length=200, null=True, choices=STATUS,default="Pending")
     
     def __str__(self):

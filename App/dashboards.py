@@ -41,12 +41,8 @@ def store(request):
     return JsonResponse(data)
 
 def dashboard(request):
-    #current_month=datetime.now().month-1
-    #current_year=datetime.now().year
-    '''----------FOR TESTING PURPOSE----------'''
     current_month=12
     current_year=2023
-    '''----------FOR TESTING PURPOSE----------'''
     last_3_months=list()
     for _ in range(3):
         if current_month==0:
