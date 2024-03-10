@@ -140,3 +140,38 @@ def dashboard(request):
         }
     }
     return JsonResponse(data)
+
+def history(request):
+    years=[2023,2022,2021]
+    sales_graph=dict()
+    product_graph=dict()
+    debring,caplock,torsion,comprspr,secmw,iclockcover=0,0,0,0,0,0
+    for i in range(len(years)-1,-1,-1):
+        records=Order.objects.filter(ordered_date__year=years[i])
+        purchase=Purchase.objects.filter(ordered_date__year=years[i])
+        sales=records.aggregate(total_sum=models.Sum('amount'))['total_sum']
+        purchase_amount=purchase.aggregate(total_sum=models.Sum('amount'))['total_sum']
+        debring+=len(records.filter(product="Debring"))
+        caplock+=len(records.filter(product="Caplock"))
+        torsion+=len(records.filter(product="Torsion Spring"))
+        comprspr+=len(records.filter(product="Compression Spring"))
+        secmw+=len(records.filter(product="Security Metre Wire"))
+        iclockcover+=len(records.filter(product="IC Lock Cover"))
+        customers=len(Customer.objects.filter(order__ordered_date__year=years[i]).distinct())
+        sales_graph[years[i]]={'orders':len(records),'sales':sales,'customers':customers,'purchase':purchase_amount,'profit':sales-purchase_amount}
+        product_graph[years[i]]={'debring':len(records.filter(product="Debring")),
+                                    'caplock':len(records.filter(product="Caplock")),
+                                    'torsion_spring':len(records.filter(product="Torsion Spring")),
+                                    'compression_spring':len(records.filter(product="Compression Spring")),
+                                    'security_metre_wire':len(records.filter(product="Security Metre Wire")),
+                                    'ic_lock_cover':len(records.filter(product="IC Lock Cover"))
+                                }
+    data={
+        'sales':{
+            'graph':sales_graph,
+        },
+        'product':{
+            'graph':product_graph,
+        }
+    }
+    return JsonResponse(data)

@@ -3,6 +3,7 @@ from . import dashboards,customers, manufacture, orders, purchase, tests
 
 urlpatterns = [
     path('dashboard/',dashboards.dashboard,name='dashboard'),
+    path('history/',dashboards.history,name='history'),
     path('store/',dashboards.store,name='store'),
     path('manufacture/',manufacture.listManufacturing,name='list_manufacture'),
     path('add_manufacture/',manufacture.startManufacturing,name='add_manufacture'),
