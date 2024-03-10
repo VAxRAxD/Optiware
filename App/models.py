@@ -69,7 +69,7 @@ class Order(models.Model):
     customer=models.ForeignKey(Customer,null=True,on_delete=models.SET_NULL)
     product=models.CharField(max_length=100,null=True)
     quantity=models.IntegerField(null=True)
-    ordered_date=models.DateField(null=True,blank=True)
+    ordered_date=models.DateField(auto_now_add=True,null=True,blank=True)
     delivered_date=models.DateField(null=True,blank=True)
     amount=models.IntegerField(null=True)
     payment_status=models.CharField(max_length=200, null=True, choices=PAYMENT,default="Unpaid")

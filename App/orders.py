@@ -1,4 +1,4 @@
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from . models import *
 from . manufacture import *
@@ -24,6 +24,10 @@ def placeOrder(request):
     if request.method=="POST":
         data = json.loads(request.body.decode('utf-8'))
         customer=data.get('customer')
+        try:
+            customer=Customer.objects.get(name=customer)
+        except:
+            return HttpResponseBadRequest()
         product=data.get('product')
         quantity=data.get('quantity')
         stock=Inventory.objects.get(name=product)
@@ -32,6 +36,12 @@ def placeOrder(request):
         required=quantity-stock.quantity
         ppp=math.floor(product.raw_material.length/product.length)
         demand=0
+        Order.objects.create(
+            customer=customer,
+            product=product.name,
+            quantity=quantity,
+            amount=product.price*quantity,
+        )
         if required<=0:
             print("Order is Ready")
             stock.quantity-=quantity
