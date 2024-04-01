@@ -1,5 +1,5 @@
 from django.urls import path
-from . import dashboards,customers, manufacture, orders, purchase, tests
+from . import dashboards,customers, manufacture, orders, purchase, forecast, tests
 
 urlpatterns = [
     path('dashboard/',dashboards.dashboard,name='dashboard'),
@@ -15,4 +15,5 @@ urlpatterns = [
     path('place_order/',orders.placeOrder,name='place_order'),
     path('list_purchase/', purchase.listPurchase,name='list_purchase'),
     path('purchase/',purchase.purchaseRawMaterial,name='purchase_material'),
+    path('forecast/',forecast.getForecast, name='forecast'),
 ]
