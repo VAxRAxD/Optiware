@@ -1,5 +1,5 @@
 from django.urls import path
-from . import dashboards,customers, manufacture, orders, purchase, forecast, camera, tests, cctvserver
+from . import dashboards,customers, manufacture, orders, purchase, forecast, cctvserver
 
 urlpatterns = [
     path('dashboard/',dashboards.dashboard,name='dashboard'),
