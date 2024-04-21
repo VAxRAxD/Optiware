@@ -1,5 +1,5 @@
 from django.urls import path
-from . import dashboards,customers, manufacture, orders, purchase, forecast, cctvserver
+from . import dashboards,customers, manufacture, orders, purchase, forecast, cctvserver, invoice
 
 urlpatterns = [
     path('dashboard/',dashboards.dashboard,name='dashboard'),
@@ -19,4 +19,5 @@ urlpatterns = [
     path('cctv/', cctvserver.index, name='index'),
     path('warehouse_feed/', cctvserver.warehouse_feed, name='warehouse_feed'),
     path('machinery_feed/', cctvserver.machinery_feed, name='machinery_feed'),
+    path('invoice_pdf/<int:id>/',invoice.downloadInvoicePdf, name='invoice_pdf'),
 ]

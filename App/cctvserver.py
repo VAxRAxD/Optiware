@@ -12,11 +12,11 @@ def gen(camera):
 				b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
 def warehouse_feed(request):
-    url="http://192.168.0.101:8080/shot.jpg"
+    url="http://192.168.29.177:8080/shot.jpg"
     return StreamingHttpResponse(gen(IPWebCam(url)),
 					content_type='multipart/x-mixed-replace; boundary=frame')
  
 def machinery_feed(request):
-    url="http://192.168.0.105:8080/shot.jpg"
+    url="http://192.168.29.232:8080/shot.jpg"
     return StreamingHttpResponse(gen(IPWebCam(url)),
 					content_type='multipart/x-mixed-replace; boundary=frame')
